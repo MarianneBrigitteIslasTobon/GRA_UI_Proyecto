@@ -56,7 +56,7 @@ internal class Program
         int baseX = Console.WindowWidth - 1;
         int baseY = Console.WindowHeight / 2;
         int altura = 13;
-        int longitudHorizontal = 5;
+        int longitudHorizontal = 6;
 
         while (baseX > 0)
         {
