@@ -13,7 +13,7 @@ internal class Program
             int anchoConsola = Console.WindowWidth;
             int altoConsola = Console.WindowHeight;
 
-            int posicionVertical = altoConsola / 2 - 2; 
+            int posicionVertical = altoConsola / 2 - 2;
             int posicionHorizontal = (anchoConsola - "Seleccione una opción:".Length) / 2;
 
             Console.SetCursorPosition(posicionHorizontal, posicionVertical);
@@ -54,49 +54,75 @@ internal class Program
         Console.WriteLine("Dibujando gráfica...\n");
 
         int baseX = Console.WindowWidth - 1;
-        int baseY = Console.WindowHeight / 2;
+        int baseY = (Console.WindowHeight / 2) + 5;
         int altura = 13;
         int longitudHorizontal = 6;
 
         while (baseX > 0)
         {
-            DibujarSegmento(baseX, baseY, altura, -1, ConsoleColor.Blue, true); 
-            baseX -= DibujarSegmento(baseX, baseY - altura, longitudHorizontal, -1, ConsoleColor.Cyan, false); 
-           DibujarSegmento(baseX, baseY - altura, altura, 1, ConsoleColor.Blue, true);
-           baseX -= DibujarSegmento(baseX, baseY, longitudHorizontal, -1, ConsoleColor.Cyan, false); 
-        }
-
-        FinalizarDibujo();
-    }
-
-    private static int DibujarSegmento(int baseX, int baseY, int longitud, int direccion, ConsoleColor color, bool esVertical)
-    {
-        Console.ForegroundColor = color;
-
-        for (int i = 0; i < longitud; i++)
-        {
-            int nuevaX = esVertical ? baseX : baseX + (i * direccion);
-            int nuevaY = esVertical ? baseY + (i * direccion) : baseY;
-
-            if (nuevaX >= 0 && nuevaX < Console.WindowWidth && nuevaY >= 0 && nuevaY < Console.WindowHeight)
+            Console.ForegroundColor = ConsoleColor.Blue;
+            for (int y = 0; y < altura; y++)
             {
-                Console.SetCursorPosition(nuevaX, nuevaY);
-                Console.Write("*");
-                Thread.Sleep(20);
+                if (baseY - y >= 0)
+                {
+                    Console.SetCursorPosition(baseX, baseY - y);
+                    Console.Write("*");
+                    Thread.Sleep(30);
+                }
             }
+
+            Console.SetCursorPosition(baseX, baseY - altura);
+            Console.Write("*");
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            for (int x = 1; x <= longitudHorizontal; x++)
+            {
+                if (baseX - x >= 0)
+                {
+                    Console.SetCursorPosition(baseX - x, baseY - altura);
+                    Console.Write("*");
+                    Thread.Sleep(30);
+                }
+            }
+
+            baseX -= longitudHorizontal;
+
+            Console.ForegroundColor = ConsoleColor.Blue;
+            for (int y = 0; y < altura; y++)
+            {
+                if (baseY - altura + y < Console.WindowHeight)
+                {
+                    Console.SetCursorPosition(baseX, baseY - altura + y);
+                    Console.Write("*");
+                    Thread.Sleep(20);
+                }
+            }
+
+            Console.SetCursorPosition(baseX, baseY);
+            Console.Write("*");
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            for (int x = 1; x <= longitudHorizontal; x++)
+            {
+                if (baseX - x >= 0)
+                {
+                    Console.SetCursorPosition(baseX - x, baseY);
+                    Console.Write("*");
+                    Thread.Sleep(20);
+                }
+            }
+
+            baseX -= longitudHorizontal;
         }
-
-        return longitud;
-    }
-
-    private static void FinalizarDibujo()
-    {
+    
         Console.SetCursorPosition(0, Console.WindowHeight - 1);
         Console.ForegroundColor = ConsoleColor.Green;
-        Console.SetCursorPosition(40, 20);
+        Console.SetCursorPosition(40, 26);
         Console.WriteLine("¡Listo! Presiona cualquier tecla para continuar...");
         Console.ReadKey();
     }
+
+
     private static void DibujarEspiral()
     {
         Console.Clear();
