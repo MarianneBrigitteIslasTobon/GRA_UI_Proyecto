@@ -55,15 +55,15 @@ internal class Program
 
         int baseX = Console.WindowWidth - 1;
         int baseY = Console.WindowHeight / 2;
-        int altura = 12;
-        int longitudHorizontal = 4;
+        int altura = 13;
+        int longitudHorizontal = 5;
 
         while (baseX > 0)
         {
             DibujarSegmento(baseX, baseY, altura, -1, ConsoleColor.Blue, true); 
             baseX -= DibujarSegmento(baseX, baseY - altura, longitudHorizontal, -1, ConsoleColor.Cyan, false); 
-            DibujarSegmento(baseX, baseY - altura, altura, 1, ConsoleColor.Blue, true); 
-            baseX -= DibujarSegmento(baseX, baseY, longitudHorizontal, -1, ConsoleColor.Cyan, false); 
+           DibujarSegmento(baseX, baseY - altura, altura, 1, ConsoleColor.Blue, true);
+           baseX -= DibujarSegmento(baseX, baseY, longitudHorizontal, -1, ConsoleColor.Cyan, false); 
         }
 
         FinalizarDibujo();
@@ -93,6 +93,7 @@ internal class Program
     {
         Console.SetCursorPosition(0, Console.WindowHeight - 1);
         Console.ForegroundColor = ConsoleColor.Green;
+        Console.SetCursorPosition(40, 20);
         Console.WriteLine("¡Listo! Presiona cualquier tecla para continuar...");
         Console.ReadKey();
     }
