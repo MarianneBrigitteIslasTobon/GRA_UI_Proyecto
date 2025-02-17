@@ -29,32 +29,43 @@ internal class Program
             }
         }
     }
+
     private static void MenuLocalizacion()
     {
         while (true)
         {
             Console.Clear();
             Console.WriteLine("Seleccione una opción:");
-            Console.WriteLine("1. Tabla de senos");
-            Console.WriteLine("2. Tabla de cosenos");
-            Console.WriteLine("3. Cuadro de asteriscos");
-            Console.WriteLine("4. Volver al menú principal");
+            Console.WriteLine("1. Mostrar la tabla de senos del 0 al 90.");
+            Console.WriteLine("2. Mostrar la tabla de cosenos del 0 al 90.");
+            Console.WriteLine("3. Calcular la hipotenusa y los ángulos de un triángulo rectángulo.");
+            Console.WriteLine("4. Calcular la pendiente, el ángulo de inclinación y el punto medio de una recta.");
+            Console.WriteLine("5. Calcular y mostrar la trayectoria de un proyectil.");
+            Console.WriteLine("6. Volver al menú principal");
 
             ConsoleKeyInfo opcion = Console.ReadKey();
 
             if (opcion.Key == ConsoleKey.D1 || opcion.Key == ConsoleKey.NumPad1)
             {
-                MostrarTablaTrigonometrica(Math.Sin, "Seno");
+                MostrarTablaSeno(Math.Sin, "Seno");
             }
             else if (opcion.Key == ConsoleKey.D2 || opcion.Key == ConsoleKey.NumPad2)
             {
-                MostrarTablaTrigonometrica(Math.Cos, "Coseno");
+                MostrarTablaCoseno(Math.Cos, "Coseno");
             }
             else if (opcion.Key == ConsoleKey.D3 || opcion.Key == ConsoleKey.NumPad3)
             {
-                DibujarCuadroAsteriscos();
+                CalcularHipotenusaYAngulos();
             }
             else if (opcion.Key == ConsoleKey.D4 || opcion.Key == ConsoleKey.NumPad4)
+            {
+                CalcularRecta();
+            }
+            else if (opcion.Key == ConsoleKey.D5 || opcion.Key == ConsoleKey.NumPad5)
+            {
+                CalcularTrayectoriaProyectil();
+            }
+            else if (opcion.Key == ConsoleKey.D6 || opcion.Key == ConsoleKey.NumPad6)
             {
                 break;
             }
@@ -69,7 +80,8 @@ internal class Program
             Console.WriteLine("Seleccione una opción:");
             Console.WriteLine("1. Gráfica de barras");
             Console.WriteLine("2. Espiral giratoria de asteriscos");
-            Console.WriteLine("3. Volver al menú principal");
+            Console.WriteLine("3. Cuadro de asteriscos");
+            Console.WriteLine("4. Volver al menú principal");
 
             ConsoleKeyInfo opcion = Console.ReadKey();
 
@@ -83,10 +95,16 @@ internal class Program
             }
             else if (opcion.Key == ConsoleKey.D3 || opcion.Key == ConsoleKey.NumPad3)
             {
+                DibujarCuadroAsteriscos();
+            }
+            else if (opcion.Key == ConsoleKey.D4 || opcion.Key == ConsoleKey.NumPad4)
+            {
                 break;
             }
         }
     }
+
+
     private static void DibujarGrafica()
     {
         Console.Clear();
@@ -219,40 +237,205 @@ internal class Program
         Console.ForegroundColor = (ConsoleColor)random.Next(1, 16);
     }
 
-    private static void MostrarTablaTrigonometrica(Func<double, double> funcion, string nombre)
+    private static void MostrarTablaCoseno(Func<double, double> funcion, string nombre)
     {
         Console.Clear();
-        Console.WriteLine($"Tabla de {nombre}:\n");
-        for (int i = 0; i <= 360; i += 10)
+
+        int anchoConsola = Console.WindowWidth;
+
+        string tituloMenu = "Menú 2 - Programas de localización";
+        int posX = (anchoConsola - tituloMenu.Length) / 2;
+        posX = Math.Max(0, posX);
+        Console.SetCursorPosition(posX, Console.CursorTop);
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine(tituloMenu + "\n");
+
+
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("Tabla de Cosenos\n");
+        Console.ResetColor();
+
+        Console.WriteLine("----------------------------------------------------------------------------------------");
+
+        int columnas = 6;
+        int filas = (90 / columnas) + 1;
+
+        for (int fila = 0; fila < filas; fila++)
         {
-            double valor = funcion(i * Math.PI / 180);
-            Console.WriteLine($"{i}°: {valor:F4}");
+            for (int col = 0; col < columnas; col++)
+            {
+                int angulo = fila + col * filas;
+                if (angulo > 90) break;
+
+                double coseno = Math.Cos(angulo * Math.PI / 180);
+                Console.Write("{0,4} {1,12:F8}   ", angulo, coseno);
+            }
+            Console.WriteLine();
         }
-        Console.WriteLine("\nPresione cualquier tecla para continuar...");
+        Console.WriteLine();
+
+        string mensajeSalida = "Presiona cualquier tecla para salir...";
+        posX = (anchoConsola - mensajeSalida.Length) / 2;
+        posX = Math.Max(0, posX);
+
+        int posY = Console.CursorTop;
+        Console.SetCursorPosition(posX, posY);
+
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine(mensajeSalida);
+        Console.ResetColor();
+
         Console.ReadKey();
     }
 
-    private static void DibujarCuadroAsteriscos()
+
+    private static void MostrarTablaSeno(Func<double, double> funcion, string nombre)
+    {
+
+        Console.Clear();
+
+        int anchoConsola = Console.WindowWidth;
+
+        string tituloMenu = "Menú 2 - Programas de localización";
+        int posX = (anchoConsola - tituloMenu.Length) / 2;
+        posX = Math.Max(0, posX); 
+        Console.SetCursorPosition(posX, Console.CursorTop);
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine(tituloMenu + "\n");
+
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("Tabla de Senos\n");
+        Console.ResetColor();
+
+        Console.WriteLine("----------------------------------------------------------------------------------------");
+
+        int columnas = 6;
+        int filas = (90 / columnas) + 1;
+
+        for (int fila = 0; fila < filas; fila++)
+        {
+            for (int col = 0; col < columnas; col++)
+            {
+                int angulo = fila + col * filas;
+                if (angulo > 90) break;
+
+                double valor = funcion(angulo * Math.PI / 180);
+                Console.Write("{0,4} {1,12:F8}   ", angulo, valor);
+            }
+            Console.WriteLine();
+        }
+        Console.WriteLine();
+
+        string mensajeSalida = "Presiona cualquier tecla para salir...";
+        posX = (anchoConsola - mensajeSalida.Length) / 2;
+        posX = Math.Max(0, posX);
+
+        int posY = Console.CursorTop;
+        Console.SetCursorPosition(posX, posY);
+
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine(mensajeSalida);
+        Console.ResetColor();
+
+        Console.ReadKey();
+    }
+
+    private static void CalcularHipotenusaYAngulos()
     {
         Console.Clear();
         Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine("Dibujar rectángulos\n");
+        Console.WriteLine("Dados los dos catetos de un triángulo rectángulo\n");
+
+        Console.Write("Ingrese el valor del cateto 1: ");
+        double cateto1 = double.Parse(Console.ReadLine());
+        Console.Write("Ingrese el valor del cateto 2: ");
+        double cateto2 = double.Parse(Console.ReadLine());
+
+        double hipotenusa = Math.Sqrt(cateto1 * cateto1 + cateto2 * cateto2);
+        double angulo1 = Math.Atan(cateto1 / cateto2) * (180 / Math.PI);
+        double angulo2 = 90 - angulo1;
+
+        Console.WriteLine($"Hipotenusa: {hipotenusa:F2}, Ángulo 1: {angulo1:F2}°, Ángulo 2: {angulo2:F2}°");
+        Console.ReadKey();
+    }
+
+    private static void CalcularRecta()
+    { 
+        Console.Clear();
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine("Dados 2 puntos de un recta calcule\n");
+       
+        Console.Write("Ingrese x1: ");
+        double x1 = double.Parse(Console.ReadLine());
+        Console.Write("Ingrese y1: ");
+        double y1 = double.Parse(Console.ReadLine());
+        Console.Write("Ingrese x2: ");
+        double x2 = double.Parse(Console.ReadLine());
+        Console.Write("Ingrese y2: ");
+        double y2 = double.Parse(Console.ReadLine());
+
+        double pendiente = (y2 - y1) / (x2 - x1);
+        double angulo = Math.Atan(pendiente) * (180 / Math.PI);
+        double puntoMedioX = (x1 + x2) / 2;
+        double puntoMedioY = (y1 + y2) / 2;
+
+        Console.WriteLine($"Pendiente: {pendiente:F2}, Ángulo: {angulo:F2}°, Punto medio: ({puntoMedioX}, {puntoMedioY})");
+        Console.ReadKey();
+    }
+
+    private static void CalcularTrayectoriaProyectil()
+    {
+        Console.Clear();
+        Console.Write("Ingrese la velocidad inicial (m/s): ");
+        double v0 = double.Parse(Console.ReadLine());
+        Console.Write("Ingrese el ángulo de lanzamiento (°): ");
+        double angulo = double.Parse(Console.ReadLine());
+        double g = 9.81;
+
+        double radianes = angulo * Math.PI / 180;
+        double vX = v0 * Math.Cos(radianes);
+        double vY = v0 * Math.Sin(radianes);
+        double tiempoVuelo = (2 * vY) / g;
+        double distanciaMax = vX * tiempoVuelo;
+        double alturaMax = (vY * vY) / (2 * g);
+
+        Console.WriteLine($"Altura máxima: {alturaMax:F2}m, Distancia máxima: {distanciaMax:F2}m\n");
+        Console.ReadKey();
+    }
+
+
+private static void DibujarCuadroAsteriscos()
+    {
+        Console.Clear();
+        Console.ForegroundColor = ConsoleColor.Green;
+
+        int anchoConsola = Console.WindowWidth;
+        int altoConsola = Console.WindowHeight;
+
+        string mensajeTitulo = "Dibujar rectángulos";
+
+        int posX = (anchoConsola - mensajeTitulo.Length) / 2;
+        int posY = altoConsola / 2 - 10;
+
+        Console.SetCursorPosition(posX, posY);
+        Console.WriteLine(mensajeTitulo + "\n");
 
         (ConsoleColor color, int ancho, int alto)[] rectangulos =
         {
-            (ConsoleColor.Green, 3, 1),
-            (ConsoleColor.Yellow, 15, 5),
-            (ConsoleColor.Red, 25, 7),
-            (ConsoleColor.Blue, 35, 11),
-            (ConsoleColor.Cyan, 45, 15)
-        };
+        (ConsoleColor.Green, 3, 1),
+        (ConsoleColor.Yellow, 15, 5),
+        (ConsoleColor.Red, 25, 9),
+        (ConsoleColor.Blue, 35, 13),
+        (ConsoleColor.Cyan, 45, 17)
+    };
 
-        int centroX = 40;
-        int centroY = 12;
+        int centroX = anchoConsola / 2;
+        int centroY = altoConsola / 2;
 
         foreach (var (color, ancho, alto) in rectangulos)
         {
             Console.ForegroundColor = color;
+
             for (int x = -ancho / 2; x <= ancho / 2; x++)
             {
                 Console.SetCursorPosition(centroX + x, centroY - alto / 2);
@@ -260,6 +443,7 @@ internal class Program
                 Console.SetCursorPosition(centroX + x, centroY + alto / 2);
                 Console.Write("*");
             }
+
             for (int y = -alto / 2; y <= alto / 2; y++)
             {
                 Console.SetCursorPosition(centroX - ancho / 2, centroY + y);
@@ -270,8 +454,14 @@ internal class Program
         }
 
         Console.ForegroundColor = ConsoleColor.Green;
-        Console.SetCursorPosition(20, centroY + 10);
-        Console.WriteLine("Listo!!! presiona una tecla para continuar");
+        string mensajeFinal = "Listo!!! presiona una tecla para continuar";
+        int posXFinal = (anchoConsola - mensajeFinal.Length) / 2;
+        int posYFinal = centroY + 10;
+
+        Console.SetCursorPosition(posXFinal, posYFinal);
+        Console.WriteLine(mensajeFinal);
+
         Console.ReadKey();
     }
+
 }
