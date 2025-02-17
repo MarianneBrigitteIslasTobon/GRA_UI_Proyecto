@@ -298,7 +298,7 @@ internal class Program
 
         string tituloMenu = "Menú 2 - Programas de localización";
         int posX = (anchoConsola - tituloMenu.Length) / 2;
-        posX = Math.Max(0, posX); 
+        posX = Math.Max(0, posX);
         Console.SetCursorPosition(posX, Console.CursorTop);
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine(tituloMenu + "\n");
@@ -342,10 +342,13 @@ internal class Program
 
     private static void CalcularHipotenusaYAngulos()
     {
+
         Console.Clear();
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine("Dados los dos catetos de un triángulo rectángulo\n");
 
+
+        Console.ForegroundColor= ConsoleColor.White;
         Console.Write("Ingrese el valor del cateto 1: ");
         double cateto1 = double.Parse(Console.ReadLine());
         Console.Write("Ingrese el valor del cateto 2: ");
@@ -355,16 +358,25 @@ internal class Program
         double angulo1 = Math.Atan(cateto1 / cateto2) * (180 / Math.PI);
         double angulo2 = 90 - angulo1;
 
-        Console.WriteLine($"Hipotenusa: {hipotenusa:F2}, Ángulo 1: {angulo1:F2}°, Ángulo 2: {angulo2:F2}°");
+        Console.WriteLine($"Hipotenusa: {hipotenusa:F2}, Ángulo 1: {angulo1:F2}°, Ángulo 2: {angulo2:F2}°\n");
+
+
+        string mensaje = "Listo!!! Presiona una tecla para continuar";
+       int anchoConsola = Console.WindowWidth;
+        int posicion = (anchoConsola - mensaje.Length) / 2;
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.SetCursorPosition(posicion, Console.CursorTop);
+        Console.WriteLine(mensaje);
+
         Console.ReadKey();
     }
-
-    private static void CalcularRecta()
+private static void CalcularRecta()
     { 
         Console.Clear();
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine("Dados 2 puntos de un recta calcule\n");
-       
+
+        Console.ForegroundColor = ConsoleColor.White;
         Console.Write("Ingrese x1: ");
         double x1 = double.Parse(Console.ReadLine());
         Console.Write("Ingrese y1: ");
@@ -379,13 +391,29 @@ internal class Program
         double puntoMedioX = (x1 + x2) / 2;
         double puntoMedioY = (y1 + y2) / 2;
 
-        Console.WriteLine($"Pendiente: {pendiente:F2}, Ángulo: {angulo:F2}°, Punto medio: ({puntoMedioX}, {puntoMedioY})");
+        Console.WriteLine($"Pendiente: {pendiente:F2}, Ángulo: {angulo:F2}°, Punto medio: ({puntoMedioX}, {puntoMedioY})\n");
+     
+        
+        string mensaje = "Listo!!! Presiona una tecla para continuar";
+        int anchoConsola = Console.WindowWidth;
+        int posicion = (anchoConsola - mensaje.Length) / 2;
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.SetCursorPosition(posicion, Console.CursorTop);
+        Console.WriteLine(mensaje);
+
         Console.ReadKey();
     }
 
     private static void CalcularTrayectoriaProyectil()
     {
         Console.Clear();
+        Console.Clear();
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine("Calcular y mostrar las coordenadas (x,y)\n");
+
+
+
+        Console.ForegroundColor= ConsoleColor.White;
         Console.Write("Ingrese la velocidad inicial (m/s): ");
         double v0 = double.Parse(Console.ReadLine());
         Console.Write("Ingrese el ángulo de lanzamiento (°): ");
@@ -400,6 +428,14 @@ internal class Program
         double alturaMax = (vY * vY) / (2 * g);
 
         Console.WriteLine($"Altura máxima: {alturaMax:F2}m, Distancia máxima: {distanciaMax:F2}m\n");
+      
+        string mensaje = "Listo!!! Presiona una tecla para continuar";
+        int anchoConsola = Console.WindowWidth;
+        int posicion = (anchoConsola - mensaje.Length) / 2;
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.SetCursorPosition(posicion, Console.CursorTop);
+        Console.WriteLine(mensaje);
+
         Console.ReadKey();
     }
 
