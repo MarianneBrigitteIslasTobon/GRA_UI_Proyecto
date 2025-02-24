@@ -80,7 +80,7 @@ internal class Program
             Console.WriteLine("Seleccione una opción:");
             Console.WriteLine("1. Gráfica de barras");
             Console.WriteLine("2. Espiral giratoria de asteriscos");
-            Console.WriteLine("3. Cuadro de asteriscos");
+            Console.WriteLine("3. Rectangulo de asteriscos");
             Console.WriteLine("4. Volver al menú principal");
 
             ConsoleKeyInfo opcion = Console.ReadKey();
@@ -95,7 +95,7 @@ internal class Program
             }
             else if (opcion.Key == ConsoleKey.D3 || opcion.Key == ConsoleKey.NumPad3)
             {
-                DibujarCuadroAsteriscos();
+                DibujarRectanguloAsteriscos();
             }
             else if (opcion.Key == ConsoleKey.D4 || opcion.Key == ConsoleKey.NumPad4)
             {
@@ -342,39 +342,85 @@ internal class Program
 
     private static void CalcularHipotenusaYAngulos()
     {
-
         Console.Clear();
-        Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine("Dados los dos catetos de un triángulo rectángulo\n");
 
+        double catetoOpuesto = ObtenerValorCateto("Introduce el cateto opuesto: ");
+        double catetoAdyacente = ObtenerValorCateto("Introduce el cateto adyacente: ");
 
-        Console.ForegroundColor= ConsoleColor.White;
-        Console.Write("Ingrese el valor del cateto 1: ");
-        double cateto1 = double.Parse(Console.ReadLine());
-        Console.Write("Ingrese el valor del cateto 2: ");
-        double cateto2 = double.Parse(Console.ReadLine());
+        double hipotenusa = CalcularHipotenusa(catetoOpuesto, catetoAdyacente);
+        Console.WriteLine($"Hipotenusa: {hipotenusa:F2}\n");
 
-        double hipotenusa = Math.Sqrt(cateto1 * cateto1 + cateto2 * cateto2);
-        double angulo1 = Math.Atan(cateto1 / cateto2) * (180 / Math.PI);
-        double angulo2 = 90 - angulo1;
+        double anguloOpuesto = CalcularAngulo(catetoOpuesto, hipotenusa);
+        double anguloAdyacente = CalcularAngulo(catetoAdyacente, hipotenusa);
 
-        Console.WriteLine($"Hipotenusa: {hipotenusa:F2}, Ángulo 1: {angulo1:F2}°, Ángulo 2: {angulo2:F2}°\n");
+        Console.WriteLine($"Ángulo opuesto: {anguloOpuesto:F2} grados");
+        Console.WriteLine($"Ángulo adyacente: {anguloAdyacente:F2} grados\n");
 
+        DibujarTriangulo(catetoOpuesto, catetoAdyacente);
 
+        MostrarMensajeFinal();
+    }
+
+    private static double ObtenerValorCateto(string mensaje)
+    {
+        Console.Write(mensaje);
+        return Convert.ToDouble(Console.ReadLine());
+    }
+
+    private static double CalcularHipotenusa(double opuesto, double adyacente)
+    {
+        return Math.Sqrt(Math.Pow(opuesto, 2) + Math.Pow(adyacente, 2));
+    }
+
+    private static double CalcularAngulo(double cateto, double hipotenusa)
+    {
+        return Math.Asin(cateto / hipotenusa) * (180 / Math.PI);  
+    }
+
+    private static void DibujarTriangulo(double opuesto, double adyacente)
+    {
+        int anchoConsola = Console.WindowWidth;
+        int centroX = (anchoConsola - (int)adyacente) / 2;
+        int centroY = (Console.WindowHeight - (int)opuesto) / 2; 
+
+        for (int i = 0; i <= (int)opuesto; i++)
+        {
+            Console.SetCursorPosition(centroX, centroY + i);
+            Console.Write('*');
+            Thread.Sleep(10); 
+        }
+
+        for (int i = 0; i <= (int)adyacente; i++)
+        {
+            Console.SetCursorPosition(centroX + i, centroY + (int)opuesto);
+            Console.Write('*');
+            Thread.Sleep(10);
+        }
+
+        for (int i = 0; i <= (int)adyacente; i++)
+        {
+            int y = (int)(opuesto * (1 - (double)i / adyacente));
+            Console.SetCursorPosition(centroX + i, centroY + (int)opuesto - y);
+            Console.Write('*');
+            Thread.Sleep(10); 
+        }
+    }
+
+    private static void MostrarMensajeFinal()
+    {
         string mensaje = "Listo!!! Presiona una tecla para continuar";
-       int anchoConsola = Console.WindowWidth;
-        int posicion = (anchoConsola - mensaje.Length) / 2;
+        int posicion = (Console.WindowWidth - mensaje.Length) / 2;
         Console.ForegroundColor = ConsoleColor.Green;
-        Console.SetCursorPosition(posicion, Console.CursorTop);
+        Console.SetCursorPosition(posicion, Console.CursorTop + 2);
         Console.WriteLine(mensaje);
-
         Console.ReadKey();
     }
-private static void CalcularRecta()
-    { 
+
+    private static void CalcularRecta()
+    {
         Console.Clear();
         Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine("Dados 2 puntos de un recta calcule\n");
+        Console.WriteLine("Dados 2 puntos de una recta, calcule\n");
 
         Console.ForegroundColor = ConsoleColor.White;
         Console.Write("Ingrese x1: ");
@@ -391,11 +437,55 @@ private static void CalcularRecta()
         double puntoMedioX = (x1 + x2) / 2;
         double puntoMedioY = (y1 + y2) / 2;
 
-        Console.WriteLine($"Pendiente: {pendiente:F2}, Ángulo: {angulo:F2}°, Punto medio: ({puntoMedioX}, {puntoMedioY})\n");
-     
-        
-        string mensaje = "Listo!!! Presiona una tecla para continuar";
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.WriteLine($"\nResultados:\n");
+        Console.WriteLine($"Pendiente: {pendiente:F2}");
+        Console.WriteLine($"Ángulo de inclinación: {angulo:F2}°");
+        Console.WriteLine($"Punto medio: ({puntoMedioX:F2}, {puntoMedioY:F2})\n");
+
+        Console.WriteLine("Presiona cualquier tecla para continuar...");
+        Console.ReadKey();
+
+        int altoConsola = Console.WindowHeight;
         int anchoConsola = Console.WindowWidth;
+
+        char[,] canvas = new char[altoConsola, anchoConsola];
+
+        for (int i = 0; i < altoConsola; i++)
+        {
+            for (int j = 0; j < anchoConsola; j++)
+            {
+                canvas[i, j] = ' ';
+            }
+        }
+
+        int origenX = anchoConsola / 2;
+        int origenY = altoConsola / 2;
+
+        for (int x = -origenX; x < origenX; x++)
+        {
+            double y = pendiente * x + (y1 - pendiente * x1);
+
+            int posX = origenX + x;
+            int posY = origenY - (int)y;  
+
+            if (posX >= 0 && posX < anchoConsola && posY >= 0 && posY < altoConsola)
+            {
+                canvas[posY, posX] = '*';
+            }
+        }
+
+        Console.Clear();
+        for (int i = 0; i < altoConsola; i++)
+        {
+            for (int j = 0; j < anchoConsola; j++)
+            {
+                Console.Write(canvas[i, j]);
+            }
+            Console.WriteLine();
+        }
+
+        string mensaje = "Listo!!! Presiona una tecla para continuar";
         int posicion = (anchoConsola - mensaje.Length) / 2;
         Console.ForegroundColor = ConsoleColor.Green;
         Console.SetCursorPosition(posicion, Console.CursorTop);
@@ -407,32 +497,53 @@ private static void CalcularRecta()
     private static void CalcularTrayectoriaProyectil()
     {
         Console.Clear();
-        Console.Clear();
         Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine("Calcular y mostrar las coordenadas (x,y)\n");
+        const double g = 9.81;
 
+        Console.ForegroundColor = ConsoleColor.White;
 
-
-        Console.ForegroundColor= ConsoleColor.White;
         Console.Write("Ingrese la velocidad inicial (m/s): ");
-        double v0 = double.Parse(Console.ReadLine());
-        Console.Write("Ingrese el ángulo de lanzamiento (°): ");
-        double angulo = double.Parse(Console.ReadLine());
-        double g = 9.81;
+        double v0 = Convert.ToDouble(Console.ReadLine());
+
+        Console.Write("Ingrese el ángulo de lanzamiento (grados): ");
+        double angulo = Convert.ToDouble(Console.ReadLine());
 
         double radianes = angulo * Math.PI / 180;
-        double vX = v0 * Math.Cos(radianes);
-        double vY = v0 * Math.Sin(radianes);
-        double tiempoVuelo = (2 * vY) / g;
-        double distanciaMax = vX * tiempoVuelo;
-        double alturaMax = (vY * vY) / (2 * g);
 
-        Console.WriteLine($"Altura máxima: {alturaMax:F2}m, Distancia máxima: {distanciaMax:F2}m\n");
-      
-        string mensaje = "Listo!!! Presiona una tecla para continuar";
-        int anchoConsola = Console.WindowWidth;
-        int posicion = (anchoConsola - mensaje.Length) / 2;
+        double v0x = v0 * Math.Cos(radianes);
+        double v0y = v0 * Math.Sin(radianes);
+
+        double tiempoVuelo = (2 * v0y) / g;
+        double alturaMax = (v0y * v0y) / (2 * g);
+        double distanciaMax = v0x * tiempoVuelo;
+
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.WriteLine("\nTiempo (s)\tX (m)\t\tY (m)\t\tVelocidad (m/s)");
+        Console.WriteLine(new string('-', 50));
+
+        double t = 0;
+        while (t <= tiempoVuelo)
+        {
+            double x = v0x * t;
+            double y = v0y * t - 0.5 * g * t * t;
+            double v = Math.Sqrt(v0x * v0x + Math.Pow(v0y - g * t, 2));
+
+            if (y < 0) break;
+
+            Console.WriteLine("{0:F1}\t\t{1:F2}\t\t{2:F2}\t\t{3:F2}", t, x, y, v);
+            t = Math.Round(t + 0.1, 1); 
+        }
+
+        Console.WriteLine(new string('-', 50));
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.WriteLine("\nResultados:");
+        Console.WriteLine("Altura máxima: {0:F2} m", alturaMax);
+        Console.WriteLine("Distancia máxima: {0:F2} m", distanciaMax);
+        Console.WriteLine("Tiempo total de vuelo: {0:F2} s", tiempoVuelo);
+
         Console.ForegroundColor = ConsoleColor.Green;
+        string mensaje = "Listo!!! Presiona una tecla para continuar";
+        int posicion = (Console.WindowWidth - mensaje.Length) / 2;
         Console.SetCursorPosition(posicion, Console.CursorTop);
         Console.WriteLine(mensaje);
 
@@ -440,7 +551,7 @@ private static void CalcularRecta()
     }
 
 
-private static void DibujarCuadroAsteriscos()
+    private static void DibujarRectanguloAsteriscos()
     {
         Console.Clear();
         Console.ForegroundColor = ConsoleColor.Green;
@@ -478,14 +589,19 @@ private static void DibujarCuadroAsteriscos()
                 Console.Write("*");
                 Console.SetCursorPosition(centroX + x, centroY + alto / 2);
                 Console.Write("*");
+                Thread.Sleep(50);
+
             }
 
             for (int y = -alto / 2; y <= alto / 2; y++)
             {
                 Console.SetCursorPosition(centroX - ancho / 2, centroY + y);
                 Console.Write("*");
+
                 Console.SetCursorPosition(centroX + ancho / 2, centroY + y);
                 Console.Write("*");
+                Thread.Sleep(50);
+
             }
         }
 
